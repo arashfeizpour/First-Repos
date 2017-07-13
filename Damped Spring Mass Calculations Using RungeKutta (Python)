@@ -1,0 +1,107 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Sep 15 14:57:30 2016
+
+@author: Arash
+
+point : solving a damped harmonic motion
+
+equation : dv / dt = '- (2 * gamma * v + w0 ** 2 * x)' ; dx / dt = 'v'
+
+method = Numerical : runge kutta
+ 
+"""
+
+#imports
+import numpy as np
+import matplotlib.pyplot as plt
+
+#variables and constants
+f = '- (2 * gamma * v + w0 ** 2 * x)'
+g = 'v'
+info = []
+m = 5 #k
+c = 10 #the linear dependence of retarding force
+k = 5
+w0 = np.sqrt(k/m)
+gamma = c / (2 * m)
+h = 0.001 #s
+v0 = 0
+x0 = 10 #m
+t0 = 0 #s
+a0 = - 9.82 #m/s^2
+info.append([x0,v0,t0,a0])
+
+#functions
+
+def k1() :
+    x = info[-1][0]
+    v = info[-1][1]
+    k1 = eval(f)
+    return k1
+
+def m1() :
+    v = info[-1][1]   
+    m1 = eval(g)    
+    return m1
+
+def k2() :
+    x = info[-1][0] + k1() * h / 2
+    v = info[-1][1] + m1() * h / 2
+    k2 = eval(f)
+    return k2
+
+def m2() :
+    v = info[-1][1] + h / 2 * m1()
+    m2 = eval(g)
+    return m2
+    
+def k3() :
+    x = info[-1][0] + k2() * h / 2
+    v = info[-1][1] + m2() * h / 2
+    k3 = eval(f)
+    return k3
+    
+def m3() :
+    v = info[-1][1] + h / 2 * m2()
+    m3 = eval(g)
+    return m3
+    
+def k4() :
+    x = info[-1][0] + k3() * h
+    v = info[-1][1] + m3() * h
+    k4 = eval(f)
+    return k4
+    
+def m4() :
+    v = info[-1][1] + h * m3()
+    m4 = eval(g)
+    return m4
+
+    
+#body
+while info[-1][2] < 10 :
+    xn1 = info[-1][0] + h/6 * (m1() + 2 * m2() + 2 * m3() + m4())
+    vn1 = info[-1][1] + h/6 * (k1() + 2 * k2() + 2 * k3() + k4())
+    tn1 = info[-1][2] + h
+    x = info[-1][0]
+    v = info[-1][1]
+    an1 = eval(f)
+    info.append([xn1,vn1,tn1,an1])
+    #numbers^     0   1   2   3
+    
+#plots
+info_mat = np.asarray(info)
+plt.plot(info_mat[:,2],info_mat[:,0])
+plt.xlabel('time')
+plt.ylabel('Position')
+
+plt.figure()
+plt.plot(info_mat[:,2],info_mat[:,1])
+plt.xlabel('time')
+plt.ylabel('Velocity')
+
+plt.figure()
+plt.plot(info_mat[:,2],info_mat[:,3])
+plt.xlabel('time')
+plt.ylabel('acceleration')
