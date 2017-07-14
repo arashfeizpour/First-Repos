@@ -1,0 +1,48 @@
+
+
+
+
+#imports
+import numpy as np
+import matplotlib.pyplot as plt
+import sympy as sp
+
+#variables
+r=0.785
+x0 = 0.7
+ff=[None] #function results list
+nn=[] #for the for loop
+x = 1-1/4/r
+print(x)
+
+#formula
+f = '4*r*4*r*Xn*(1-Xn)*(1-4*r*Xn*(1-Xn))'
+df = sp.diff(f,'Xn')
+Xn = np.linspace(0,1,100)
+fn1 = ((4*r)**2)*Xn*(1-Xn)*(1-4*r*Xn*(1-Xn))
+plt.plot(Xn,fn1)
+#plt.plot([0,1],[0,1])
+
+
+#body
+Xn = x0
+fn = eval(f)
+ff.append(fn)
+
+n = 0
+nn.append(n)
+while n < 1000:
+    n += 1
+    nn.append( n )
+    n = ff[-1]
+#    dfn  = eval(str(df))
+#    ff.append(dfn)
+    fn = eval( f )
+    ff.append( fn )
+   
+
+#plot
+plt.plot(ff,ff,'+')
+#plt.figure(2)
+#plt.xlim(0,200)
+#plt.plot(nn,ff)
