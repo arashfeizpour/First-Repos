@@ -1,11 +1,10 @@
-print('a ra vared knid : /n')
-a = int(input())
-print('b ra vared knid : /n')
-b = int(input())
-print('c ra vared knid : /n')
-c = int(input())
+print('insert the first side : \n')
+a = float(input())
+print('insert the second side: \n')
+b = float(input())
+print('insert the third side : \n')
+c = float(input())
 if(a + b > c and a + c > b and c + b > a):
-    print ("Triangle")
+    print ("It is a triangle")
 else :
-    print("Not a Triangle")
-        
+    print("It is NOT a triangle")
