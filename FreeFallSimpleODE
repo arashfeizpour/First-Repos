@@ -1,0 +1,44 @@
+#package imports
+from matplotlib.pyplot import plot , show, xlabel, ylabel
+
+
+#constant and global variable declerantions
+ #height
+h = 20 #m
+ #init time
+t0 = 0 #s
+ #time list
+time = []
+ #position list
+pos = []
+ #time element
+dt = 0.05 #s
+ #gravitation constant
+g = 9.807 #m/s^2
+
+
+#app body
+
+time.append(t0)
+pos.append(h)
+time.append(t0 + dt)
+
+while pos[-1] > 0:
+    new_pos = h - g * time[-1] ** 2
+    if new_pos > 0 :
+        pos.append(new_pos)
+        new_time = time[-1] + dt
+        time.append(new_time)
+    else : 
+        new_pos = 0
+        pos.append(new_pos)
+
+
+#OUTPUT
+print('time : ',time)
+print()
+print('positions : ', pos) 
+xlabel('Time')
+ylabel('Height')
+plot(time, pos , 'r-' , 50)
+show()
