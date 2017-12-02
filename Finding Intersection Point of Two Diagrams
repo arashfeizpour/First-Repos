@@ -1,48 +1,43 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Dec 29 22:11:53 2016
 
-
-
+@author: Arash
+"""
 
 #imports
+import scipy
 import numpy as np
 import matplotlib.pyplot as plt
-import sympy as sp
-
-#variables
-r=0.785
-x0 = 0.7
-ff=[None] #function results list
-nn=[] #for the for loop
-x = 1-1/4/r
-print(x)
-
-#formula
-f = '4*r*4*r*Xn*(1-Xn)*(1-4*r*Xn*(1-Xn))'
-df = sp.diff(f,'Xn')
-Xn = np.linspace(0,1,100)
-fn1 = ((4*r)**2)*Xn*(1-Xn)*(1-4*r*Xn*(1-Xn))
-plt.plot(Xn,fn1)
-#plt.plot([0,1],[0,1])
 
 
-#body
-Xn = x0
-fn = eval(f)
-ff.append(fn)
+#the horizental axis
+ ###using the ending point that makes the left side zero (non complex)
+y = np.linspace(0.000001,np.pi / 2 ,40000)
 
-n = 0
-nn.append(n)
-while n < 1000:
-    n += 1
-    nn.append( n )
-    n = ff[-1]
-#    dfn  = eval(str(df))
-#    ff.append(dfn)
-    fn = eval( f )
-    ff.append( fn )
-   
 
-#plot
-plt.plot(ff,ff,'+')
-#plt.figure(2)
-#plt.xlim(0,200)
-#plt.plot(nn,ff)
+#this is lambda in the formula
+l = np.pi**2 / 4
+
+leftSide = np.sqrt(l - y**2)/y 
+rightSide = scipy.tan(y)
+
+#plotting the left and right side of the equation
+plt.plot(y,leftSide,'r')
+plt.plot(y,rightSide)
+
+#for better vision of the intersection point we limit the axes
+plt.ylim(0,20)
+plt.xlim(0,3)
+
+#this gives back the sign of the right side subtracted by the left side so 
+#we know where they intersect and the sign changes
+ ###subtracted by 1 so we can use np.nonzero() to find the indice
+sign = np.sign(leftSide - rightSide ) - 1
+
+#finding the intersection point by np.nonzero()
+ip = y[np.nonzero(sign)[0][0]]
+print('the intersection point is : ',ip)
+
+#showing the intersection point on the diagram
+plt.plot(ip,scipy.tan(ip),'o')
