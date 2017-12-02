@@ -24,7 +24,7 @@ rightSide = scipy.tan(y)
 
 #plotting the left and right side of the equation
 plt.plot(y,leftSide,'r')
-plt.plot(y,rightSide)
+plt.plot(y,rightSide, 'blue')
 
 #for better vision of the intersection point we limit the axes
 plt.ylim(0,20)
@@ -41,3 +41,5 @@ print('the intersection point is : ',ip)
 
 #showing the intersection point on the diagram
 plt.plot(ip,scipy.tan(ip),'o')
+plt.xlabel('y')
+plt.ylabel('f(y)')
