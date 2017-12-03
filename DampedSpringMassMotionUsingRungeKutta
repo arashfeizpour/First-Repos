@@ -4,7 +4,8 @@ Created on Thu Sep 15 14:57:30 2016
 
 @author: Arash
 
-point : solving a damped harmonic motion
+point : solving a damped harmonic motion equation
+This program gets some initial info of your problem, e.g. mass, spring constant and then gives you the behavior of this damped system with showing you the acceleration, velocity and position diagrams.
 
 equation : dv / dt = '- (2 * gamma * v + w0 ** 2 * x)' ; dx / dt = 'v'
 
@@ -21,7 +22,7 @@ f = '- (2 * gamma * v + w0 ** 2 * x)'
 g = 'v'
 info = []
 m = 5 #k
-c = 10 #the linear dependence of retarding force
+c = 0.5 #the linear dependence of retarding force
 k = 5
 w0 = np.sqrt(k/m)
 gamma = c / (2 * m)
