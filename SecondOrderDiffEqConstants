@@ -15,7 +15,7 @@ two equations
 from sympy import nsolve, log, Symbol
  
 
-#constants and initial conditions
+#constants and boundary conditions
 k = 20.0
 m = 2.0
 ti1 = 0.0
