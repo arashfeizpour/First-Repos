@@ -15,7 +15,7 @@ two equations
 from sympy import nsolve, log, Symbol
  
 
-#constants
+#constants and initial conditions
 k = 20.0
 m = 2.0
 ti1 = 0.0
@@ -34,13 +34,13 @@ def findcnst(equation):
     
     t = ti1
     x = xi1
-    a = eval(equation)
+    a = eval(equation) #first eq
     
     t = ti2
-    x = xi2
-    b = eval(equation)
+    x = xi2 
+    b = eval(equation) #second eq
     
-    constants = nsolve([a,b],[c1,c2],[1.0,0.5])
+    constants = nsolve([a,b],[c1,c2],[1.0,0.5]) #solving 2 variables 2 eqs for c1 and c2
     print(constants)
     
 findcnst(equation)
