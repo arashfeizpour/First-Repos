@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul 15 16:20:51 2016
+
+@author: Arash
+
+finding constants of a second order differential equation using two variable 
+two equations
+
+"""
+
+#the equation must be standardized meaning being equal to zero so we
+#can use the resulting equations in nsolve to find the roots 
+#and it must be a string for eval():
+from sympy import nsolve, log, Symbol
+ 
+
+#constants
+k = 20.0
+m = 2.0
+ti1 = 0.0
+xi1 = 10.0
+ti2 = 1.0
+xi2 = 8.0
+
+
+   
+equation = '+k*t**2/(2*m) + x*log(x) - x + c1*x + c2'
+
+
+def findcnst(equation):
+    c1 = Symbol('c1')    
+    c2 = Symbol('c2')
+    
+    t = ti1
+    x = xi1
+    a = eval(equation)
+    
+    t = ti2
+    x = xi2
+    b = eval(equation)
+    
+    constants = nsolve([a,b],[c1,c2],[1.0,0.5])
+    print(constants)
+    
+findcnst(equation)
