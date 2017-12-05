@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul 15 17:28:59 2016
+
+@author: Arash
+"""
+k =20.5
+m = 2.3
+from sympy import solve,Symbol,log
+
+x = Symbol('x')
+t = Symbol('t')
+a = +k*t**2/(2*m) + x*log(x) - x
+b = solve(a,t)
+print(b)
+
