@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Dec  5 13:56:21 2017
+
+@author: Arash
+"""
+
+#imports
+import sympy
+
+#variables
+m, k, x0, v0, omega0, t = sympy.symbols('m, k, x0, v0, omega0, t')
+x = sympy.Function('x')
+
+#solving d^2x/dt^2 = 1/m * -k * x for x
+sol = sympy.dsolve(sympy.Derivative(x(t), t, 2) + omega0 * x(t))
+
+#boundary conditions
+ics = [sympy.Eq(sol.args[1].subs(t, 0), x0),
+       sympy.Eq(sol.args[1].diff(t).subs(t, 0), v0)]
+solved_ics = sympy.solve(ics)
+
+#inserting constants
+full_sol = sol.subs(solved_ics[0])
+
+#giving v_0 and x_0 real values
+case1 = sympy.simplify(full_sol.subs({x0:1, v0:0, omega0:1}))
+
+#plotting
+sympy.plot(case1.rhs)
+print(case1)
