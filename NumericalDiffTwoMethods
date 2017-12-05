@@ -1,0 +1,52 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jul 19 15:54:47 2016
+
+@author: Arash
+"""
+
+import pandas as pn
+import numpy as np
+import matplotlib.pyplot as plt
+
+dframe = pn.read_csv('file:///C:/Users/Amin/Desktop/Python%20directory/falling%20styrophoam.csv')
+dframe_mat = dframe.as_matrix()
+#print(dframe_mat[0][1])
+vv_cdif = [None] #central difference approximation
+vv_fdif = [] #forward difference approximation
+n = 0 ; m = 1
+
+#for central difference approximation of velocities
+while n <= 7 :
+    num = dframe_mat[n+2][m] - dframe_mat[n][m]
+    denom = dframe_mat[n+2][m-1] - dframe_mat[n][m-1]
+    v = num/denom
+    vv_cdif.append(v)
+    n += 1
+vv_cdif.append( None )
+dframe_mat = np.c_[dframe_mat,vv_cdif] 
+
+
+#for forward difference approximation of velocities
+n = 0    
+while n <= 8 :
+    num = dframe_mat[n+1][m] - dframe_mat[n][m]
+    denom = dframe_mat[n+1][m-1] - dframe_mat[n][m-1]
+    v = num/denom
+    vv_fdif.append(v)
+    n += 1
+vv_fdif.append(None)
+dframe_mat = np.c_[dframe_mat,vv_fdif]
+
+#ndArray to dataframe conversion
+a = pn.DataFrame(dframe_mat)
+
+print('data :')
+print(a)
+plt.plot(a[:][0],a[:][2],'r')
+plt.text(0.6, 5, 'C-approx')
+plt.plot(a[:][0],a[:][3])
+plt.text(0.35, 5, 'f-approx')
+plt.plot([0.8],[0.8]) #instead of limitting axes
+plt.xlabel('time')
+plt.ylabel('velocity')
