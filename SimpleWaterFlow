@@ -1,0 +1,63 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jul 21 18:06:25 2016
+
+@author: Arash
+"""
+
+#imports 
+import math
+from matplotlib.pyplot import show , plot , xlabel, ylabel
+
+
+#constants and global variables 
+steel_weight = 49568048 #N
+row = 1000 #kg/m^3 for water
+g = 9.802 #m/s^2
+water_weight = eval('100*math.pi*20*1000*g') #N
+top_pressure = steel_weight / 100 * math.pi
+tt = [0]
+v2v2 = [None]
+v1v1 = [None]
+z1z1 = [20] #height
+p2 = 0
+z2 = 0
+r = 0.5 #radius of pipe
+
+#functions 
+def velocity2() :
+    dt = 0.00001
+    
+    while z1z1[-1] > 0 :
+        F = eval('100*math.pi*z1z1[-1]*1000*g') + steel_weight
+        v2 = math.sqrt(F*4/(1000*math.pi*r**2))
+        v2v2.append(v2)
+        dz = v2 * dt
+        dV = dz * math.pi * r**2
+        dz1 = dV / 100 * math.pi
+        z1z1.append(z1z1[-1]-dz1)
+        v1 = dz1 / dt
+        v1v1.append(v1)
+        tt.append(tt[-1]+dt)
+        
+        
+
+#body
+velocity2()
+
+#results
+print('first entering velocity : ',v2v2[1] , 'm/s')
+print('in kilometers : ', v2v2[1]*3.5878, 'km/h')
+print('last entering velocity : ',v2v2[-1] , 'm/s')
+print('in kilometers : ', v2v2[-1]*3.5878, 'km/h')
+print('the highest velocity in dams is 511.121 km/h in the dam Spirit of Australia.')
+
+
+
+#plots
+plot(tt,v2v2)
+xlabel('Time')
+ylabel('Velocity')
+#plot([0,20000],[0,20000]) #bisector:blue
+
+show()
