@@ -1,0 +1,104 @@
+#point here is to write a code that finds the 
+#the way a falling body behaves under both
+#drag force and gravitation : F = -mg(1 - v/vt)
+
+#imports
+#import sympy as sp
+import matplotlib.pyplot as plt
+from sympy import Symbol,solve
+
+#constants and global variables
+
+tt = []
+vv = []
+yy = []
+aa = []
+m = Symbol('m')
+v = Symbol('v')
+g = Symbol('g')
+vt = Symbol('vt')
+v0 = Symbol('v0')
+y0 = Symbol('y0')
+t = Symbol('t')
+
+
+###Formulas
+#F = - m * g * (1 - v/vt)
+#a = F / m,    hence:
+a = '-g*(-v/vt + 1)'
+#v = v0 + a*t,    hence:
+v = 'vt*(dt*g - v0)/(dt*g - vt)'
+y = 'y0 + v*dt'
+
+
+
+
+
+g = 9.802 #m/s^2
+Iv = 0
+Iy = 100
+vt = -6
+It = 0
+dt = 0.1
+tt.append(It)
+vv.append(Iv)
+yy.append(Iy)
+aa.append(-g)
+
+
+#functions
+
+def velocity() :
+    v1 = v.replace('v0','vv[-1]')
+    while vv[-1] > vt+0.1 :
+        t = tt[-1] + dt
+        tt.append(t)        
+        v_new = eval(v1)
+        vv.append(v_new)
+        
+
+def acceleration():
+    n = 1
+    a1 = a.replace('-v','-vv[n]')
+    while vv[n] > vt+0.1 :
+        a_new = eval(a1)
+        aa.append(a_new)
+        n += 1
+    n = -1
+    a_new = eval(a1)
+    aa.append(a_new)
+
+def position() :
+    n = 1
+    y1 = y.replace('v','vv[n]')
+    y1 = y1.replace('y0','yy[-1]')
+    while vv[n] > vt+0.1 : 
+        y_new = eval(y1)
+        yy.append(y_new)
+        n += 1
+    n = -1
+    y_new = eval(y1)
+    yy.append(y_new)
+
+#body
+velocity()
+acceleration()
+position()
+
+#results
+print('accelerations : ' , aa)
+print('velocities : ' , vv)
+print('positions : ' , yy)
+
+#plottings
+plt.ylabel('acceleration, velocity')
+plt.xlabel('time')
+plt.plot(tt,aa,'red')
+plt.text(2.5,-5.5,'velocity')
+plt.plot(tt,vv)
+plt.text(1.5,-1.5,'acceleration')
+
+plt.figure()
+plt.plot(tt,yy)
+plt.ylabel('position')
+plt.xlabel('time')
