@@ -1,0 +1,104 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Jul 16 19:27:17 2016
+
+@author: Arash
+
+point in this program is to numerically solve the simple free fall of an object
+of mass m
+"""
+
+#imports
+import matplotlib.pyplot as plt
+
+
+#global variables and constants 
+dt = 0.001
+tt = []
+yy = []
+vv = []
+t0 = 0
+v0 = 0
+y0 = 20
+g = 9.8 #m/s^2
+
+
+#functions 
+def estimator() :
+    while yy[-1] > 0 :
+        t = tt[-1] + dt
+        v_new = -g * dt + vv[-1]
+        y = yy[-1] + vv[-1] * dt + 1/2 * -g * dt*dt
+        vv.append(v_new)
+        tt.append(round(t,3))
+        yy.append(y)
+
+def estimator1() :
+    while yy1[-1] > 0 :
+        t = tt1[-1] + dt
+        v_new = -g * dt + vv1[-1]
+        y = yy1[-1] + vv1[-1] * dt + 1/2 * -g * dt*dt
+        vv1.append(v_new)
+        tt1.append(round(t,5))
+        yy1.append(y)  
+        
+def estimator2() :
+    while yy2[-1] > 0 :
+        t = tt2[-1] + dt
+        v_new = -g * dt + vv2[-1]
+        y = yy2[-1] + vv2[-1] * dt + 1/2 * -g * dt*dt
+        vv2.append(v_new)
+        tt2.append(round(t,6))
+        yy2.append(y)
+        
+def estimator3() :
+    while yy3[-1] > 0 :
+        t = tt3[-1] + dt
+        v_new = -g * dt + vv3[-1]
+        y = yy3[-1] + vv3[-1] * dt + 1/2 * -g * dt*dt
+        vv3.append(v_new)
+        tt3.append(round(t,7))
+        yy3.append(y)
+
+#body
+tt.append(t0)
+yy.append(y0)
+vv.append(v0)
+estimator()
+
+tt1 = [t0]
+yy1 = [y0]
+vv1 = [v0]
+dt = 0.00001
+estimator1()
+
+tt2 = [t0]
+yy2 = [y0]
+vv2 = [v0]
+dt = 0.000001
+estimator2()
+
+
+tt3 = [t0]
+yy3 = [y0]
+vv3 = [v0]
+dt = 0.0000005
+estimator3()
+
+
+#result and plotting
+
+print('at t = 1s : ')
+print('Anlytically : height = 15.1')
+print('for dt = 0.001 : height = ', yy[tt.index(1)])
+print('for dt = 0.00001 : height = ', yy1[tt1.index(1)])
+print('as you can see with dt = 0.00001 the result at t = 1s is accurate to 10 decimal place!')
+print('for dt = 0.000001 : height = ', yy2[tt2.index(1)])
+print('for dt = 0.0000005 : height = ', yy3[tt3.index(1)])
+print('as you can see smaller dt doesnt mean more accuracy')
+
+plt.plot(tt1,yy1)
+plt.ylabel('height')
+plt.xlabel('time')
+plt.show()
+print('It hits the ground at : ', tt[-1])
