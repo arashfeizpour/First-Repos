@@ -1,0 +1,66 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jul 17 22:17:10 2016
+
+@author: Arash
+
+production of a function to get starting acceleration, time-step , velocity , 
+position and time and calculate velocities and positions to come.
+
+"""
+
+from sympy import Symbol
+import matplotlib.pyplot as plt
+aa_mid = []
+aa = []
+tt = []
+xx = []
+vv = []
+m = Symbol('m')
+t = Symbol('t')
+v = Symbol('v')
+g = 9.802 #m/s^2
+vt = 6 #m/s #final velocity due to drag force
+
+def a_mid(F_expr,dt):
+#    t = tt[-1] + dt/2 #mid t     
+#    print('a_mid',eval(str(F_expr/m).replace('t','(tt[-1] + dt/2)')))
+    v = vv[-1]
+    return eval(str(F_expr/m).replace('t','tt[-1] + dt/2'))
+def a(F_expr):
+#    t = tt[-1]
+#    print(eval(str(F_expr/m).replace('t','tt[-1]')))
+    v = vv[-1]
+    return eval(str(F_expr/m).replace('t','tt[-1]'))
+
+n = 0
+def Eu_rich(F_expr , dt ,It ,Ipos , Ivel):
+    global n
+    tt.append(It)
+    xx.append(Ipos)
+    vv.append(Ivel)
+    while xx[-1] > 0:
+        aa_mid.append(a_mid(F_expr,dt))
+        aa.append(a(F_expr))
+        t_new = tt[-1] + dt
+        tt.append(t_new)
+        vel_mid = vv[-1] + aa[-1] * dt/2
+        v_new = vv[-1] + aa_mid[-1] * dt
+        vv.append(v_new)
+        x_new = xx[-1] - vel_mid * dt
+        xx.append(x_new)
+        n += 1
+    
+    # test
+        # test
+            # test
+Eu_rich(m*g*(1 - v**2 / vt**2), 0.0001 , 0 , 20, 0)
+print('The final velocity : ', vv[-1])
+print('The final position : ', xx[-1])
+print('The total time elapsed : ', tt[-1])
+plt.plot(tt,vv, 'red')
+plt.plot(tt,xx)
+plt.xlabel('time')
+plt.ylabel('height, velocity')
+plt.text(1.5,15,'Position')
+plt.text(1.5,7,'Velocity')
