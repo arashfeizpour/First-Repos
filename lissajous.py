@@ -6,7 +6,7 @@ Created on Fri Jul 29 01:57:48 2016
 
 point : lissajous figures
 
-equation : x = A * sin(wx*t + phiX) , y = B * sin(wy*t + phiY)
+equation : x = sin(A * wx*t + phiX) , y = sin(B * wy*t + phiY)
 
 method = Numerical : ---
  
