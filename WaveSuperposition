@@ -1,0 +1,87 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul 29 01:57:48 2016
+
+@author: Arash
+
+point : SHow How Waves Superpose
+
+equation : x1 = A * sin(w1 * t + k * t) , y = B * sin(wy * t + phiY)
+
+method = Numerical : ---
+ 
+"""
+
+#imports
+import numpy as np
+import matplotlib.pyplot as plt
+
+#variables
+w1 = 2*np.pi; w2 = 3*np.pi/2
+k1 = np.pi; k2 = np.pi
+A = 1 ; B = 1
+y1 = 'A * np.sin(w1 * t + k1 * x1)'; y2 = 'B * np.sin(w2 * t + k2 * x2)'
+v1 = w1 / k1; v2 = w2 / k2
+tt = [0]
+xx1 = [0]; yy1 = [0]
+xx2 = [0]; yy2 = [0]
+sp = []
+dt = 0.001
+
+#functions 
+def calculator():
+    while tt[-1] <= 1 :
+        t = tt[-1]
+        x1_new = v1*dt + xx1[-1]
+        xx1.append(x1_new)
+        x1 = x1_new
+        y1_new = eval(y1)
+        yy1.append(y1_new)
+        x2_new = v2*dt + xx2[-1]
+        xx2.append(x2_new)
+        x2 = x2_new
+        y2_new = eval(y2)
+        yy2.append(y2_new)
+        t_new = tt[-1] + dt
+        tt.append(t_new)
+
+            
+def superposition() :
+    n = 0
+    while n <= tt.index(tt[-1]) :
+        sp_new = yy1[n] + yy2[n]
+        sp.append(sp_new)
+        n += 1
+        
+#body 
+calculator()
+superposition()
+
+#results and plots
+
+##X1
+plt.figure()
+plt.plot(xx1,yy1,'b')
+plt.xlabel('x1')
+plt.ylabel('y1')
+
+##GuideLines
+plt.plot([0,xx1[-1]],[0,0],'k:')
+
+
+##X2
+plt.figure()
+plt.plot(xx2,yy2)
+plt.xlabel('x2')
+plt.ylabel('y2')
+
+##GuideLines
+plt.plot([0,xx2[-1]],[0,0],'k:')
+
+##Superposition
+plt.figure()
+plt.plot(tt,sp)
+plt.plot([0,tt[-1]],[0,0],'k:')
+plt.xlabel('t')
+plt.ylabel('Superposition')
+
