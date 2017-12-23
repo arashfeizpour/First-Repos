@@ -6,7 +6,7 @@ Created on Fri Jul 29 01:57:48 2016
 
 point : SHow How Waves Superpose
 
-equation : x1 = A * sin(w1 * t + k * t) , y = B * sin(wy * t + phiY)
+equation : y1 = A * sin(w1 * t + k * t) , y2 = B * sin(wy * t + phiY)
 
 method = Numerical : ---
  
