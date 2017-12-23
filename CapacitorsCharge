@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul 29 01:57:48 2016
+
+@author: Arash
+
+point : amount of charge deposited on a capacitor through time in a rc circuit
+with V = 10V , R = 2000ohms and C = 10**-6 farads and finding the dt so we have
+accuracy of 1 decimal point in t = 0.005s
+
+equation : R*dQ/dt = V - Q/C
+
+method = Numerical : Euler
+ 
+"""
+
+#imports
+import numpy as np
+import sympy as sp
+import matplotlib.pyplot as plt
+
+#variables
+qq = [0]
+tt = [0]
+R = 2000.0
+C = 10**-6
+V = 10.0
+dt = 0.001
+
+#functions 
+
+def charge() :
+    while tt[-1] < 0.012 :
+        v = V/R - qq[-1]/C/R
+        q = qq[-1] + v * dt
+        qq.append(q)
+        tt.append(round(tt[-1] + dt,5))
+
+def charge1() :
+    while tt1[-1] < 0.012 :
+        v = V/R - qq1[-1]/C/R
+        q = qq1[-1] + v * dt1
+        qq1.append(q)
+        tt1.append(round(tt1[-1] + dt1,5))
+
+#body 
+charge()
+print('for t = 0.005 :')
+print('with dt = 0.001 charge is :',qq[tt.index(0.005)])
+    #changing dt
+tt1 = [0]
+dt1 = 0.0001
+qq1 = [0]
+charge1()
+print('with dt = 0.0001 charge is :',qq1[tt1.index(0.005)])
+
+    #analytical
+t = np.linspace(0,0.012,30)
+Q = 'C*V*(1- np.e**(-t/(R*C)))'
+Q = eval(Q)
+
+#results and plots
+l1 = plt.plot(tt,qq,'r', label = 'with dt = 0.001') #legend 1
+l2 = plt.plot(tt1,qq1, 'b', label = 'with dt = 0.0001') #legend 2
+plt.xlabel('time')
+plt.ylabel('charge')
+
+l3 = plt.plot(t,Q,'g:', label = 'Analytical') #legend 3
+plt.legend(handles=[l1[0], l2[0], l3[0]]) #note that we used []
+
+t = 0.005
+print('Analytically charge is : ', eval('C*V*(1- np.e**(-t/(R*C)))'))
