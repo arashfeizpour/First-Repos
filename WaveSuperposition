@@ -4,9 +4,9 @@ Created on Fri Jul 29 01:57:48 2016
 
 @author: Arash
 
-point : SHow How Waves Superpose
+point : SHowing How Waves Superpose
 
-equation : y1 = A * sin(w1 * t + k * t) , y2 = B * sin(wy * t + phiY)
+equation : y1 = A * sin(w1 * t + k1 * x1) , y2 = B * sin(w2 * t + k2 * x2)
 
 method = Numerical : ---
  
@@ -30,7 +30,7 @@ dt = 0.001
 
 #functions 
 def calculator():
-    while tt[-1] <= 1 :
+    while tt[-1] <= 2 :
         t = tt[-1]
         x1_new = v1*dt + xx1[-1]
         xx1.append(x1_new)
