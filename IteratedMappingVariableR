@@ -1,0 +1,53 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+point : Xn+1 = 4rXn(1-Xn) is an one dimensional map . . .
+we wanna check how changing r would change the results
+
+"""
+
+#imports
+import matplotlib.pyplot as plt
+
+#variables
+X0 = 0.5
+xx = []
+nn = [0]
+xx.append(X0)
+
+#functions
+def iteratemap(r):
+    while nn[-1] <= 50 :
+        Xn1 = 4 * r * xx[-1] * (1 - xx[-1])
+        xx.append(Xn1)
+        n1 = nn[-1] + 1
+        nn.append(n1)
+
+#body + plots and results
+r = 0.24
+iteratemap(r)
+l1 = plt.plot(nn,xx, label = 'r = 0.24')
+
+xx = [X0]
+nn = [0]
+r = 0.5
+iteratemap(r)
+l2 = plt.plot(nn,xx, label = 'r = 0.5')
+
+xx = [X0]
+nn = [0]
+r = 0.8
+iteratemap(r)
+l3 = plt.plot(nn,xx, label = 'r = 0.8')
+
+xx = [X0]
+nn = [0]
+r = 0.9
+iteratemap(r)
+l4 = plt.plot(nn,xx, label = 'r = 0.9')
+
+plt.xlabel('n')
+plt.ylabel('x')
+plt.legend(handles=[l1[0], l2[0], l3[0], l4[0]])
+plt.show()
