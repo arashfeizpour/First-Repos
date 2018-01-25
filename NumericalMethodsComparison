@@ -1,0 +1,250 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul 29 01:57:48 2016
+
+@author: Arash
+
+point : finding the best numerical method through conservation of energy
+
+equation : dx/dt = v , dv/dt = -w0**2 * x , dt/dt = 1
+
+method = Numerical : Euler, Euler-cromer, Euler-Richardson, Verlet
+ 
+"""
+
+#imports
+import scipy as sp
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.text as txt
+
+#variables
+info = []
+infoE = []
+infoER = []
+infoV=[]
+ECEC = []
+EuEu = []
+ERER=[]
+VV=[]
+v0 = 0
+t0 = 0
+x0 = 10
+m = 3 #kg
+k = 20
+E0 = 1/2 * k * x0 ** 2
+w0 = np.sqrt(k/m)
+a0 = -w0**2 * x0
+info.append([x0,v0,t0,a0])
+infoE.append([x0,v0,t0,a0])
+infoER.append([x0,v0,t0,a0])
+infoV.append([x0,v0,t0,a0])
+dt = 0.0005 #s
+
+EC=[]
+Eu=[]
+ER=[]
+V=[]
+
+#functions 
+
+###Euler-Cromer
+def MotionCalculatorEuCr(): #using Euler-Cromer
+    while info[-1][2] < 12 :
+        a = -w0**2 * info[-1][0]
+        v_new = a * dt + info[-1][1]
+        x_new = v_new * dt + info[-1][0]
+        t_new = info[-1][2] + dt
+        info.append([x_new,v_new,t_new,a])
+        
+def deltaEEuCr():
+    q = 0
+    while q < 24001 :
+        Eq = 1/2 * k * info[q][0] ** 2 + 1/2 * m * info[q][1] ** 2
+        EC.append(Eq)
+    #    print(Eq)
+        deltaEq = Eq - E0
+        ECEC.append(deltaEq)
+        q += 1
+        
+###Euler        
+def MotionCalculatorEu(): #using Euler
+    while infoE[-1][2] < 12 :
+        a_new = -w0**2 * infoE[-1][0]
+        v_new = a_new * dt + infoE[-1][1]
+        x_new = infoE[-1][1] * dt + infoE[-1][0]
+        t_new = infoE[-1][2] + dt
+        infoE.append([x_new,v_new,t_new,a_new])
+        
+def deltaEEu():
+    n = 0
+    while n < 24001 : 
+        En = 1/2 * k * infoE[n][0] ** 2 + 1/2 * m * infoE[n][1] ** 2
+        Eu.append(En)
+  #      print(En)
+        deltaEn = En - E0
+        EuEu.append(deltaEn)
+        n += 1
+
+###Euler-Richardson              
+def MotionCalculatorER(): #using Euler-Richardson
+    while infoER[-1][2] < 12 :    
+        a_new = -w0**2 * infoER[-1][0]
+        a_mid = -w0**2 * (infoER[-1][1] * dt/2 + infoER[-1][0]) #with help of Euler method
+        v_new = infoER[-1][1] + a_mid * dt
+        v_mid = infoER[-1][1] + a_new * dt/2
+        x_new = infoER[-1][0] + v_mid * dt
+        t_new = infoER[-1][2] + dt
+        infoER.append([x_new,v_new,t_new,a_new])
+        
+        
+def deltaEER():
+    n = 0
+    while n < 24001 : 
+        En = 1/2 * k * infoER[n][0] ** 2 + 1/2 * m * infoER[n][1] ** 2
+        ER.append(En)
+  #      print(En)
+        deltaEn = En - E0
+        ERER.append(deltaEn)
+        n += 1
+        
+###Verlet
+        
+def MotionCalculatorV(): #using Verlet
+    while infoV[-1][2] < 12 :
+        a_new = -w0**2 * infoV[-1][0]
+        v_new = (a_new + infoV[-1][3])/2 * dt + infoV[-1][1]
+        x_new = infoV[-1][1] * dt + infoV[-1][0] + 1/2 * infoV[-1][3] * dt**2
+        t_new = infoV[-1][2] + dt
+        infoV.append([x_new,v_new,t_new,a_new])
+        
+                
+def deltaEV():
+    n = 0
+    while n < 24001 : 
+        En = 1/2 * k * infoV[n][0] ** 2 + 1/2 * m * infoV[n][1] ** 2
+        V.append(En)
+  #      print(En)
+        deltaEn = En - E0
+        VV.append(deltaEn)
+        n += 1
+        
+        
+        
+
+        
+        
+#body 
+MotionCalculatorEuCr()
+deltaEEuCr()
+info_mat = np.asarray(info)
+
+MotionCalculatorEu()
+deltaEEu()
+infoE_mat = np.asarray(infoE)
+
+MotionCalculatorER()
+deltaEER()
+infoER_mat = np.asarray(infoER)
+
+MotionCalculatorV()
+deltaEV()
+infoV_mat = np.asarray(infoV)
+
+
+
+
+
+
+
+
+#results and plots
+
+###Euler-Cromer
+
+fig=plt.figure()
+ax = fig.add_subplot(111)
+plt.plot(info_mat[:,2],info_mat[:,0])
+plt.plot(info_mat[:,2],info_mat[:,1])
+plt.plot([0,12],[0,0],'--')
+plt.plot([2.4,2.4],[-70,70],'r--')
+plt.xlabel('Time')
+plt.ylabel('Position(blue) , Velocity(green) , Acceleration(AquaBlue)')
+plt.title('Euler-Cromer')
+plt.plot(info_mat[:,2],info_mat[:,3])
+ax.annotate('turning point',xy=(2.4,10),xytext=(0,30),textcoords='offset points',arrowprops=dict(arrowstyle='->',connectionstyle='arc3,rad=.4'))
+ax.annotate('equilibrium point',xy=(6.600,0),xytext=(0,-50),textcoords='offset points',arrowprops=dict(arrowstyle='->',connectionstyle="arc3,rad=.2"))
+
+
+plt.figure()
+plt.plot(info_mat[:,2],ECEC)
+plt.xlabel('time')
+plt.ylabel('Energy Difference')
+plt.title('Euler-Cromer')
+
+
+##Euler
+plt.figure()
+plt.plot(infoE_mat[:,2],infoE_mat[:,0])
+plt.plot(infoE_mat[:,2],infoE_mat[:,1])
+plt.plot(infoE_mat[:,2],infoE_mat[:,3])
+plt.plot([0,12],[0,0],'--')
+plt.xlabel('time')
+plt.ylabel('Position(blue) , Velocity(green) , Acceleration(AquaBlue)')
+plt.title('Euler')
+
+
+plt.figure()
+plt.plot(infoE_mat[:,2],EuEu)
+plt.xlabel('time')
+plt.ylabel('Energy Difference')
+plt.title('Euler')
+
+#plt.plot(infoE_mat[:,2],Eu)
+#plt.show()
+
+##Euler-Richardson
+plt.figure()
+plt.plot(infoER_mat[:,2],infoER_mat[:,0])
+plt.plot(infoER_mat[:,2],infoER_mat[:,1])
+plt.plot(infoER_mat[:,2],infoER_mat[:,3])
+plt.plot([0,12],[0,0],'--')
+plt.xlabel('time')
+plt.ylabel('Euler-Richardson')
+plt.title('Euler-Richardson')
+
+plt.figure()
+plt.plot(infoER_mat[:,2],ERER)
+plt.xlabel('time')
+plt.ylabel('Energy Difference')
+plt.title('Euler-Richardson')
+
+
+#plt.plot(info_mat[:,2],ER)
+#plt.show()
+
+#Verlet
+plt.figure()
+plt.plot(infoV_mat[:,2],infoV_mat[:,0])
+plt.plot(infoV_mat[:,2],infoV_mat[:,1])
+plt.plot(infoV_mat[:,2],infoV_mat[:,3])
+plt.plot([0,12],[0,0],'--')
+plt.xlabel('time')
+plt.ylabel('Verlet')
+plt.title('Verlet')
+
+plt.figure()
+plt.plot(infoV_mat[:,2],VV)
+plt.xlabel('time')
+plt.ylabel('Energy Difference')
+plt.title('Verlet')
+
+
+###PhaseSpace
+fig=plt.figure()
+bx=fig.add_subplot(111)
+plt.plot(infoER_mat[0:4700,0],m * infoER_mat[0:4700,1])
+plt.xlabel('Position')
+plt.ylabel('Momentum')
+plt.title('Phase Space')
+bx.annotate('directionOfRotation',xy=(0,-78),xytext=(20,0),textcoords='offset points',arrowprops=dict(arrowstyle='->'))
